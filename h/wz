@@ -1,0 +1,40 @@
+fib(6)
+->fib(5)
+->return 8
+->fib(4)
+->return 5
+return 13
+->->->->->fib(1)
+->->->->->return 1
+->->->->->fib(0)
+->->->->->return 1
+g(2,2)
+->g(2,1)
+->->g(2,0)
+->->return 1
+->->f(2)
+->->->f(1)
+->->->->f(0)
+->->->->return 1
+->->->return 1
+->->return 2
+->return 2
+->f(2)
+->->f(1)
+->->->f(0)
+->->->return 1
+->->return 1
+->return 2
+return 4
+g(2,2)
+->g(2,1)
+->->g(2,0)
+->->return 1
+->return 2
+return 4
+g(2,2)
+->g(2,1)
+->return 2
+->f(2)
+->return 2
+return 4
