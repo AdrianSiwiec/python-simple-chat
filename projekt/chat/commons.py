@@ -6,7 +6,8 @@ class MessageType(Enum):
     PING = 1
     usernameTaken = 2
     addUsername = 10
-    sendMessage = 11
+    removeUsername = 11
+    sendMessage = 20
 
 
 class Message():
@@ -19,6 +20,9 @@ class Message():
     def encode(self):
         data = str(self.msg_type.value) + "#" + self.sender + "#" + self.message + "#" + self.receiver
         return bytes(data, 'UTF-8')
+
+    def __str__(self):
+        return "msg_type=" + str(self.msg_type) + ", sender=" + self.sender + ", msg=" + self.message + ", recv=" + self.receiver
 
 
 def decode(message):
