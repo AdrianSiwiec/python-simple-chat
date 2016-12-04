@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dokument>
+<tytul_dokumentu>Pakiety do programowania sieciowego w Pythonie</tytul_dokumentu>
+<css>../../css/lecture.css</css>
+<obrazki>../../images</obrazki>
+<index>../../index.html</index>
+<examples>0</examples>
+<slajdy>
+
+<slajd>
+<naglowek>
+Programowanie sieciowe w Pythonie.
+</naglowek>
+<zawartosc>
+Python udostępnia szeroki wachlarz modułów do programowania aplikacji sieciowych. W wersji <b>Python 3.4</b> znajdujemy takie moduły:
+<ul>
+	<li> <tt>socket</tt> - pakiet dający dostęp do standardowego interfejsu gniazd BSD, obsługujący gniazda TCP oraz UDP,</li>
+	<li> <tt>select</tt> - pakiet dający dostęp do funkcji systemowych (takich jak <tt>select</tt> czy <tt>poll</tt>) monitorujących gotowość operacji IO (czytania bądź pisania)
+	na deskryptorach plików związanych z gniazdani (i nie tylko, np. w Unixie również pipami),</li>
+	<li> <tt>selectors</tt> - dostarcza multiplekserów wejścia-wyjscia wysokiego poziomu (podobnie jak <tt>Selector</tt>) w Javie, wykorzystując narzedzia dostępne 
+	w module <tt>select</tt>, </li>
+	<li> <tt>asyncore</tt> - dostarcza narzędzie do tworzenia aplikacji asynchronicznych. Centralnym obiektem takich aplikacji jest pętla <tt>loop</tt> monitorująca 
+	zdarzenia na zarejestrowanych w pętli gniazdach. Moduł wykorzystuje narzędzia modułu <tt>select</tt>, </li>
+	<li> <tt>asynchat</tt> - podobnie jak wyżej, zorientowany na aplikacje wykorzystujące protokoły z instrukcjami oddzielonymi znakami specjalnymi</li>
+	<li><tt>asyncio</tt> - wprowadzony w wersji Python 3.4, ma zastępować moduły <tt>asyncore</tt> oraz <tt>asynchat</tt>. </li>
+</ul>
+</zawartosc>
+</slajd>
+
+<slajd>
+<naglowek>
+Moduł <tt>socket</tt> oraz <tt>threading</tt> - serwery wielowatkowe
+</naglowek>
+<zawartosc>
+	<p>
+	Moduł <tt>socket</tt> dostarcza niskopoziomowy interfejs obsługujący gniazda sieciowe. Interfejs Pythona (zorientowany obiektowo) do obsługi gniazd jest translacją 
+	funkcji systemowych obsługujących gniazda typu BSD, patrz <a href="http://en.wikipedia.org/wiki/Berkeley_sockets">wikipedia</a>. Moduł wspiera obsługę 
+	podstawowych typów gniazd wykorzystywanych w programowaniu sieciowym: strumieniowych gniazd TSP 
+	(<tt>socket.SOCK_STREAM</tt>) oraz gniazd datagramowych (<tt>socket.SOCK_DGRAM</tt>). 
+	</p>
+	
+	<p>
+	Moduł <tt>threading</tt> dostarcza narzędzi do obsługi wątków. Plik <tt>echo_server.py</tt> zawiera przykład 
+	serwera wielowątkowego napisanego w Pythonie, który przesyła dane przesłane przez klienta do wszystkich klientów zalogowanych
+	na serwerze.
+	</p>
+	
+	
+	<p>Dokumentacja Python 3.4: <a href="https://docs.python.org/3.4/library/socket.html">socket</a>, <a href="https://docs.python.org/3.4/library/threading.html">threading</a></p>
+	
+	<a class="przyklad" href="./przyklady/socket/time_server.py">time_server.py (prosty serwer)</a> <br>
+	<a class="przyklad" href="./przyklady/socket/time_client.py">time_client.py</a><br>
+	<a class="przyklad" href="./przyklady/socket/echo_server.py">echo_server.py (serwer wielowątkowy)</a><br>
+	<a class="przyklad" href="./przyklady/socket/echo_client.py">echo_client.py</a>
+		
+</zawartosc>
+</slajd>
+
+<slajd>
+	<naglowek>
+		Moduł <tt>select</tt>
+	</naglowek>
+	<zawartosc>
+		<p>
+		Moduł <tt>select</tt> oferuje pythonową wersję funkcji systemowych <tt>select()</tt> oraz <tt>poll()</tt> (oraz inne, patrz dokumentacja)
+		które monitorują gotowość do wykonania operacji IO na zbiorze deskryptorów plików, przede wszystkich związanych z gniazdami sieciowymi.
+		</p>
+		
+		<p>
+		Plik <tt>echo_server.py</tt> zawiera przykład użycia funkcji <tt>select()</tt>. Operacja <tt>select()</tt> monitoruje, czy standardowe wejście
+		bądź też strumień związany z gniazdem akceptującym nie zgłasza gotowości do operacji odczytu.
+		</p>
+		<a class="przyklad" href="./przyklady/select/echo_server.py">echo_server.py (użycie <tt>select()</tt>)</a>
+	</zawartosc>
+</slajd>
+
+<slajd>
+<naglowek>
+Moduł <tt>selectors</tt>
+</naglowek>
+<zawartosc>
+<p>
+Moduł <tt>selectors</tt> dostarcza różnego typu multiplekserów operacji IO, np. <tt>SelectSelector</tt> bazujący na <tt>select.select()</tt>
+czy też <tt>PollSelector</tt> bazujący na <tt>select.poll()</tt>. API do obsługi selectorów przypomina API wykorzystywane w JAVA NIO.
+</p>
+
+<p>Dokumentacja Python 3.4: <a href="https://docs.python.org/3.4/library/selectors.html">selectors</a></p>
+
+
+<a class="przyklad" href="./przyklady/selectors/selector.py">selector.py (serwer z dokumentacji modułu <tt>selectors</tt>)</a><br>
+</zawartosc>
+</slajd>
+
+<slajd>
+<naglowek>
+Moduł <tt>asyncore</tt> oraz <tt>asynchat</tt>
+</naglowek>
+<zawartosc>
+	<p>
+		Moduł <tt>asyncore</tt> oraz <tt>asynchat</tt> umożliwia tworzenie kanałów (będących instancjami klasy <tt>asyncore.dispatcher</tt>
+		bądź <tt>asynchat.dispatcher</tt>, zazwyczaj kanał odpowiada gniazdu sieciowemu), które są następnie rejestrowane w <tt>asyncore.loop()</tt> celem monitorowania
+		obsługi odpowiednich zdarzeń IO na zarejestrowanych kanałach. Przy każdym obiegu pętli <tt>asyncore.loop()</tt>:
+		<ul>
+			<li>blokujemy się na selectorze (możemy wyspecyfikować jakiego typu selektora używa pętla),</li>
+			<li>obsługujemy zdarzenia (np. <tt>handle_read()</tt>)  na kanałach, które zgłosiły gotowość odpowiednich operacji IO,</li>
+			<li>dla każdego kanału wykonywane sa operacje <tt>writable()</tt> oraz <tt>readable()</tt>
+				które określają, czy kanał ten będzie monitorowany pod kątem operacji pisania bądź/oraz czytania w kolejnym obiegu pętli.
+			</li>
+		</ul>
+	</p>
+	
+	<p>
+		Moduł <tt>asynchat</tt> działa podobnie jak <tt>asyncore</tt>, posiada dodatkowo interfejs umożliwiający prostą komunikację z klientem w przypadku, 
+		gdy każda instrukcja protokołu kończy się tym samym ciągiem bajtów np <tt>b'\r\n'</tt>.
+	</p>
+	<p>Dokumentacja Python 3.4: <a href="https://docs.python.org/3.4/library/asyncore.html">asyncore</a> oraz <a href="https://docs.python.org/3.4/library/asynchat.html">asynchat</a></p>
+	
+	<a class="przyklad" href="./przyklady/asyncore/echoasyncore.py">echoasyncore.py (serwer echo z wykorzystaniem modułu <tt>asyncore</tt>)</a><br>
+	<a class="przyklad" href="./przyklady/asyncore/echoasynchat.py">echoasynchat.py (parsowanie instrukcji, wykorzystanie modułu <tt>asynchat</tt>)</a><br>
+</zawartosc>
+</slajd>
+
+
+
+
+</slajdy>
+</dokument>	

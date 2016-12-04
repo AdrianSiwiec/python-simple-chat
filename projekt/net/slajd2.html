@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>Pakiety do programowania sieciowego w Pythonie</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../../css/lecture.css" type="text/css" rel="stylesheet">
+<head>
+<body>
+<div class="naglowek">Moduł <tt>socket</tt> oraz <tt>threading</tt> - serwery wielowatkowe</div>
+<div class="nawigacja_gorna"> 
+	<a href="./slajd1.html"><img src="../../images/left.bmp"></a>
+	<a href="./menu.html"><img src="../../images/up.bmp"></a>
+	<a href="./slajd3.html"><img src="../../images/right.bmp"></a>
+</div>
+<div class="zawartosc">
+	<p>
+	Moduł <tt>socket</tt> dostarcza niskopoziomowy interfejs obsługujący gniazda sieciowe. Interfejs Pythona (zorientowany obiektowo) do obsługi gniazd jest translacją 
+	funkcji systemowych obsługujących gniazda typu BSD, patrz <a href="http://en.wikipedia.org/wiki/Berkeley_sockets">wikipedia</a>. Moduł wspiera obsługę 
+	podstawowych typów gniazd wykorzystywanych w programowaniu sieciowym: strumieniowych gniazd TSP 
+	(<tt>socket.SOCK_STREAM</tt>) oraz gniazd datagramowych (<tt>socket.SOCK_DGRAM</tt>). 
+	</p>
+	
+	<p>
+	Moduł <tt>threading</tt> dostarcza narzędzi do obsługi wątków. Plik <tt>echo_server.py</tt> zawiera przykład 
+	serwera wielowątkowego napisanego w Pythonie, który przesyła dane przesłane przez klienta do wszystkich klientów zalogowanych
+	na serwerze.
+	</p>
+	
+	
+	<p>Dokumentacja Python 3.4: <a href="https://docs.python.org/3.4/library/socket.html">socket</a>, <a href="https://docs.python.org/3.4/library/threading.html">threading</a></p>
+	
+	<a class="przyklad" href="./przyklady/socket/time_server.py">time_server.py (prosty serwer)</a> <br>
+	<a class="przyklad" href="./przyklady/socket/time_client.py">time_client.py</a><br>
+	<a class="przyklad" href="./przyklady/socket/echo_server.py">echo_server.py (serwer wielowątkowy)</a><br>
+	<a class="przyklad" href="./przyklady/socket/echo_client.py">echo_client.py</a>
+</div>
+<div class="stopka">
+<hr>
+	<a href="./slajd1.html"><img src="../../images/left.bmp"></a>
+	<a href="./menu.html"><img src="../../images/up.bmp"></a>
+	<a href="./slajd3.html"><img src="../../images/right.bmp"></a>
+</div>
+</body>
+</html>
