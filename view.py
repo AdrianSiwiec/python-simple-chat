@@ -71,7 +71,7 @@ class View:
         if self.running_queue.empty():
             self.root.destroy()
             return
-        self.root.after(50, self.update_loop)
+        self.root.after(100, self.update_loop)
 
     def on_send_pressed(self, event):
         current = self.users.curselection()
