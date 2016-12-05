@@ -3,6 +3,7 @@ demonstracja ukladacza grid
 """
 import tkinter as tk
 
+_debug = True
 
 class View:
     def __init__(self, root, send_queue, receive_queue, add_users_queue, running_queue):
@@ -52,7 +53,7 @@ class View:
 
     def update_loop(self):
         if not self.receive_queue.empty():
-            print("Updating chat window")
+            if _debug: print("Updating chat window")
             msg, sender, receiver = self.receive_queue.get()
             self.chat_window.config(state=tk.NORMAL)
             self.chat_window.insert(tk.END, sender + "->" + receiver + ": " + msg + "\n")
@@ -60,10 +61,10 @@ class View:
         if not self.add_users_queue.empty():
             add, usr = self.add_users_queue.get()
             if add:
-                print("Adding usr: " + usr)
+                if _debug: print("Adding usr: " + usr)
                 self.users.insert(tk.END, usr)
             else:
-                print("removing usr: " + usr)
+                if _debug: print("removing usr: " + usr)
                 for i in range(self.users.size()):
                     if usr == self.users.get(i):
                         self.users.delete(i)
