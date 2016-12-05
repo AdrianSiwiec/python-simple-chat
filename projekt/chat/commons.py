@@ -18,7 +18,7 @@ class Message():
         self.receiver = receiver
 
     def encode(self):
-        data = str(self.msg_type.value) + "#" + self.sender + "#" + self.message + "#" + self.receiver
+        data = str(self.msg_type.value) + "#" + self.sender + "#" + self.message + "#" + self.receiver + "$"
         return bytes(data, 'UTF-8')
 
     def __str__(self):
@@ -26,7 +26,7 @@ class Message():
 
 
 def decode(message):
-    data = message.decode('UTF-8').split("#", 4)
+    data = message.split("#", 4)
     msg_type = MessageType(int(data[0]))
     sender = data[1]
     message = data[2]

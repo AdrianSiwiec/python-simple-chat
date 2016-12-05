@@ -51,6 +51,7 @@ class EchoServer:
             if s.clientSocket == client:
                 self.senders.remove(s)
                 username = s.username
+        print("Server removed user: " + username)
         for s in self.senders:
             if s.clientSocket != client:
                 s.messages_to_receive.put(Message(MessageType.removeUsername, username))
@@ -128,33 +129,35 @@ class ClientToReceive(threading.Thread):
 
     def run(self):
         while not self.running_queue.empty():
-            data = b''
+            received_data = b''
             try:
-                data = self.client_socket.recv(1024)
-                if data:
-                    msg = decode(data)
-                    if msg.msg_type == MessageType.sendMessage:
-                        for s in self.server.senders:
-                            if msg.receiver == "ALL" or msg.receiver == s.username:
-                                s.messages_to_receive.put(msg)
+                received_data = self.client_socket.recv(1024)
+                if received_data:
+                    received_data = received_data.decode('UTF-8').split("$")
+                    print("Server received raw data: " + str(received_data))
+                    for data in received_data:
+                        if data:
+                            msg = decode(data)
+                            if msg.msg_type == MessageType.sendMessage:
+                                for s in self.server.senders:
+                                    if msg.receiver == "ALL" or msg.receiver == s.username:
+                                        s.messages_to_receive.put(msg)
 
-                    elif msg.msg_type == MessageType.addUsername:
-                        contains = False
-                        for s in self.server.senders:
-                            if msg.sender == s.username:
-                                contains = True
-                        if contains:
-                            print("Server didn't accept user: " + msg.sender)
-                            self.queue_to_fill.put(decode(encode(MessageType.usernameTaken)))
-                        else:
-                            print("Server accepted user: " + msg.sender)
-                            self.queue_to_fill.put(decode(encode(MessageType.OK, msg.sender)))
-                            time.sleep(1)
-                            for s in self.server.senders:
-                                if s.username != msg.sender and s.username != "ERR0R":
-                                    s.messages_to_receive.put(msg)
-                                    self.queue_to_fill.put(decode(encode(MessageType.addUsername, s.username)))
-
+                            elif msg.msg_type == MessageType.addUsername:
+                                contains = False
+                                for s in self.server.senders:
+                                    if msg.sender == s.username:
+                                        contains = True
+                                if contains:
+                                    print("Server didn't accept user: " + msg.sender)
+                                    self.queue_to_fill.put(Message(MessageType.usernameTaken))
+                                else:
+                                    print("Server accepted user: " + msg.sender)
+                                    self.queue_to_fill.put(Message(MessageType.OK, msg.sender))
+                                    for s in self.server.senders:
+                                        if s.username != msg.sender and s.username != "ERR0R":
+                                            s.messages_to_receive.put(msg)
+                                            self.queue_to_fill.put(Message(MessageType.addUsername, s.username))
 
                 else:
                     self.running_queue.get()
@@ -163,11 +166,11 @@ class ClientToReceive(threading.Thread):
                         print("IF clause: {0}".format(data))
                     break
 
-            except:
+            except Exception as e:
                 self.server.clean_client(self.client_socket)
                 self.running_queue.get()
                 if debug:
-                    print("EXCEPT clasue: {0}".format(data))
+                    print("EXCEPT clasue: {0}".format(e))
                 break
 
 

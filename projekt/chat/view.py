@@ -5,12 +5,13 @@ import tkinter as tk
 
 
 class View:
-    def __init__(self, root, send_queue, receive_queue, add_users_queue):
+    def __init__(self, root, send_queue, receive_queue, add_users_queue, running_queue):
         self.root = root
         self.send_queue = send_queue
         self.receive_queue = receive_queue
         self.add_users_queue = add_users_queue
-        self.root.title("Moja aplikacja")
+        self.running_queue = running_queue
+        self.root.title("Czat")
         self.root.minsize(600, 400)
         self.mainFrame = tk.Frame(self.root)
         self.mainFrame.grid(row=0, column=0, sticky=tk.N + tk.S + tk.W + tk.E)
@@ -25,18 +26,6 @@ class View:
         self.users.insert(tk.END, "ALL")
         self.users.select_set(0)
         self.users.event_generate("<<ListboxSelect>>")
-
-        # self.users_frame = tk.Frame(self.mainFrame)
-        # self.users = []
-        # self.chosenUser = tk.IntVar()
-        # all = tk.Radiobutton(self.users_frame, text="ALL", variable=self.chosenUser, value=1)
-        # all.grid(column=1, row=0, rowspan=1, sticky=tk.N + tk.S + tk.W + tk.E)
-        # self.users.append(("ALL", all))
-        #
-        # all = tk.Radiobutton(self.users_frame, text="OTHER", variable=self.chosenUser, value=2)
-        # all.grid(column=1, row=1, rowspan=1, sticky=tk.N + tk.S + tk.W + tk.E)
-        # self.users.append(("OTHER", all))
-
 
 
         self.input_text = tk.StringVar()
@@ -78,14 +67,19 @@ class View:
                 for i in range(self.users.size()):
                     if usr == self.users.get(i):
                         self.users.delete(i)
+        if self.running_queue.empty():
+            self.root.destroy()
+            return
         self.root.after(50, self.update_loop)
 
     def on_send_pressed(self, event):
-        self.send_queue.put((self.input_text.get(), self.users.get(self.users.curselection()[0])))
+        current = self.users.curselection()
+        index = current[0] if len(current) > 0 else 0
+        self.send_queue.put((self.input_text.get(), self.users.get(index)))
         self.input_text.set("")
 
 
-def create_view(send_queue, receive_queue, add_users_queue):
+def create_view(send_queue, receive_queue, add_users_queue, running_queue):
     root = tk.Tk()
-    app = View(root, send_queue, receive_queue, add_users_queue)
+    app = View(root, send_queue, receive_queue, add_users_queue, running_queue)
     return app
